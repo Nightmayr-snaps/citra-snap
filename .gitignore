@@ -1,0 +1,8 @@
+*.snap
+# Files created during CI for use as variables
+build
+latest
+current
+
+# files that can be created by snapcraft
+exported.txt

@@ -1,0 +1,247 @@
+name: citra-emu
+base: core20
+version: latest
+summary: Nintendo 3DS Emulator
+description: "Citra is an experimental open-source Nintendo 3DS emulator/debugger written in C++. \nIt is written with portability in mind, with builds actively maintained for Windows, Linux and macOS.\n\nCitra emulates a subset of 3DS hardware and therefore is useful for running/debugging homebrew applications, and it is also able to run many commercial games! Some of these do not run at a playable state, \nbut work is being done every day to advance the project forward. (Playable here means compatibility of at least \"Okay\" on the game compatibility list.)\n\nCitra folder location: *`$HOME/snap/citra-emu/common/.local/share/citra-emu`*\n\nThis snap is not necessarily endorsed or officially maintained by the upstream developers.\n\nUpstream Project: https://citra-emu.org/\nsnapcraft.yaml Build Definition: https://github.com/Nightmayr/citra-nightly-snap/blob/master/snap/snapcraft.yaml\n\nDonate to citra: https://citra-emu.org/donate/\n"
+license: GPL-2.0
+icon: snap/gui/citra.png
+grade: stable
+confinement: strict
+architectures:
+  - build-on: amd64
+parts:
+  citra-nightly:
+    plugin: cmake
+    source: https://github.com/citra-emu/citra-nightly.git
+    source-tag: nightly-1584
+    cmake-parameters: [-DCMAKE_BUILD_TYPE=Release, -DCMAKE_INSTALL_PREFIX=/usr/local/citra/nightly, -DENABLE_FFMPEG_AUDIO_DECODER=ON]
+    build-packages:
+      - pkg-config
+      - dpkg-dev
+      - build-essential
+      - libsdl2-dev
+      - qtbase5-dev
+      - libqt5opengl5-dev
+      - qtmultimedia5-dev
+      - libavcodec-dev
+      - libavcodec-extra
+      - ffmpeg
+    stage-packages:
+      - qtwayland5
+      - libsdl2-dev
+      - qtbase5-dev
+      - libqt5opengl5-dev
+      - qtmultimedia5-dev
+      - libpulse0
+      - libqt5multimedia5-plugins
+    override-build: |
+      snapcraftctl build
+      sed -i 's|Icon=citra|Icon=/usr/local/citra/nightly/share/icons/hicolor/scalable/apps/citra.svg|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/nightly/share/applications/citra.desktop
+      sed -i 's|Name=Citra|Name=Citra Nightly|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/nightly/share/applications/citra.desktop
+    after:
+      - ffmpeg
+  citra-canary:
+    plugin: cmake
+    source: https://github.com/citra-emu/citra-canary.git
+    source-tag: canary-1798
+    cmake-parameters: [-DCMAKE_BUILD_TYPE=Release, -DCMAKE_INSTALL_PREFIX=/usr/local/citra/canary, -DENABLE_FFMPEG_AUDIO_DECODER=ON]
+    build-packages:
+      - pkg-config
+      - dpkg-dev
+      - build-essential
+      - libsdl2-dev
+      - qtbase5-dev
+      - libqt5opengl5-dev
+      - qtmultimedia5-dev
+      - libavcodec-dev
+      - libavcodec-extra
+      - ffmpeg
+    stage-packages:
+      - qtwayland5
+      - libsdl2-dev
+      - qtbase5-dev
+      - libqt5opengl5-dev
+      - qtmultimedia5-dev
+      - libpulse0
+      - libqt5multimedia5-plugins
+    override-build: |
+      snapcraftctl build
+      sed -i 's|Icon=citra|Icon=/usr/local/citra/canary/share/icons/hicolor/scalable/apps/citra.svg|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/canary/share/applications/citra.desktop
+      sed -i 's|Name=Citra|Name=Citra Canary|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/canary/share/applications/citra.desktop
+    after:
+      - ffmpeg
+  ffmpeg:
+    plugin: nil
+    stage-packages:
+      - libfdk-aac-dev
+      - ffmpeg
+      - libswscale-dev
+      - libavformat-dev
+      - libavcodec-dev
+      - libavdevice-dev
+      - libavcodec-extra
+      - freeglut3
+      - libglu1
+  desktop-qt5:
+    build-packages:
+      - build-essential
+      - qtbase5-dev
+      - dpkg-dev
+    make-parameters:
+      - FLAVOR=qt5
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqt5gui5
+      - libgdk-pixbuf2.0-0
+      - libqt5svg5
+      - try:
+          - appmenu-qt5
+      - locales-all
+      - xdg-user-dirs
+      - libgtk2.0-0
+      - qt5-gtk-platformtheme
+    override-prime: |
+      snapcraftctl prime
+      sed -i 's|XDG_DATA_HOME=$SNAP_USER_DATA|XDG_DATA_HOME=$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/bin/desktop-launch
+      sed -i 's|XDG_CONFIG_HOME=$SNAP_USER_DATA|XDG_CONFIG_HOME=$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/bin/desktop-launch
+  plasma-integration:
+    plugin: nil
+    stage-packages:
+      - breeze-icon-theme
+      - kde-style-breeze
+      - plasma-integration
+plugs:
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes
+  gtk-2-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes:gtk-2-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes
+apps:
+  citra-qt-nightly:
+    command: bin/desktop-launch $SNAP/usr/local/citra/nightly/bin/citra-qt
+    desktop: usr/local/citra/nightly/share/applications/citra.desktop
+    environment:
+      HOME: "$SNAP_USER_COMMON"
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      KDE_FORK_SLAVES: 1
+      DISABLE_WAYLAND: 1
+      # KF5_LIBEXEC_DIR: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5"
+      PATH: "$PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5" # Allows kioslave5 to be found, above commented env variable doesn't work for some reason  
+    plugs:
+      - desktop
+      - desktop-legacy
+      - x11
+      - wayland
+      - pulseaudio
+      - opengl
+      - joystick
+      - unity7
+      - network
+      - network-bind
+      - home
+      - removable-media
+      - gsettings
+      - hardware-observe
+      - mount-observe
+  citra-qt-canary:
+    command: bin/desktop-launch $SNAP/usr/local/citra/canary/bin/citra-qt
+    desktop: usr/local/citra/canary/share/applications/citra.desktop
+    environment:
+      HOME: "$SNAP_USER_COMMON"
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      KDE_FORK_SLAVES: 1
+      DISABLE_WAYLAND: 1
+      # KF5_LIBEXEC_DIR: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5"
+      PATH: "$PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5" # Allows kioslave5 to be found, above commented env variable doesn't work for some reason  
+    plugs:
+      - desktop
+      - desktop-legacy
+      - x11
+      - wayland
+      - pulseaudio
+      - opengl
+      - joystick
+      - unity7
+      - network
+      - network-bind
+      - home
+      - removable-media
+      - gsettings
+      - hardware-observe
+      - mount-observe
+  citra-canary:
+    command: usr/local/citra/canary/bin/citra
+    environment:
+      HOME: "$SNAP_USER_COMMON"
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      DISABLE_WAYLAND: 1
+    plugs:
+      - x11
+      - wayland
+      - pulseaudio
+      - opengl
+      - joystick
+      - network
+      - network-bind
+      - home
+      - removable-media
+      - hardware-observe
+      - mount-observe
+  citra-nightly:
+    command: usr/local/citra/nightly/bin/citra
+    environment:
+      HOME: "$SNAP_USER_COMMON"
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      DISABLE_WAYLAND: 1
+    plugs:
+      - x11
+      - wayland
+      - pulseaudio
+      - opengl
+      - joystick
+      - network
+      - network-bind
+      - home
+      - removable-media
+      - hardware-observe
+      - mount-observe
+  citra-room-canary:
+    command: usr/local/citra/canary/bin/citra-room
+    environment:
+      HOME: "$SNAP_USER_COMMON"
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      DISABLE_WAYLAND: 1
+    plugs:
+      - network
+      - network-bind
+      - home
+  citra-room-nightly:
+    command: usr/local/citra/nightly/bin/citra-room
+    environment:
+      HOME: "$SNAP_USER_COMMON"
+      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      DISABLE_WAYLAND: 1
+    plugs:
+      - network
+      - network-bind
+      - home
