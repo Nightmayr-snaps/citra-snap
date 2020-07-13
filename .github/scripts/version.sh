@@ -28,7 +28,7 @@ if [ $CURRENT_NIGHTLY_VERSION_TAG != $LATEST_NIGHTLY_VERSION_TAG ] || [ $CURRENT
         yq w -i snap/snapcraft.yaml version C$CURRENT_CANARY_VERSION_SNAP-N$LATEST_NIGHTLY_VERSION
     else
         echo "citra-canary versions don't match, github: $LATEST_CANARY_VERSION_TAG snap: $CURRENT_CANARY_VERSION_TAG"
-        echo "updating snapcraft.yaml with new nightly version"
+        echo "updating snapcraft.yaml with new canary version"
         yq w -i snap/snapcraft.yaml parts.citra-canary.source-tag $LATEST_CANARY_VERSION_TAG
         yq w -i snap/snapcraft.yaml version C$LATEST_CANARY_VERSION-N$CURRENT_NIGHTLY_VERSION_SNAP
     fi
