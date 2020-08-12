@@ -21,24 +21,28 @@ parts:
       - build-essential
       - libsdl2-dev
       - qtbase5-dev
+      - libpulse-dev
       - libqt5opengl5-dev
       - qtmultimedia5-dev
       - libavcodec-dev
       - libavcodec-extra
       - ffmpeg
+      - libfdk-aac-dev
     stage-packages:
       - qtwayland5
-      - libsdl2-dev
-      - qtbase5-dev
-      - libqt5opengl5-dev
-      - qtmultimedia5-dev
+      - libsdl2-2.0-0
+      - libqt5opengl5
+      - libqt5multimedia5
       - libpulse0
       - libqt5multimedia5-plugins
     override-build: |
       snapcraftctl build
       sed -i 's|Icon=citra|Icon=/usr/local/citra/nightly/share/icons/hicolor/scalable/apps/citra.svg|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/nightly/share/applications/citra.desktop
       sed -i 's|Name=Citra|Name=Citra Nightly|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/nightly/share/applications/citra.desktop
+    stage:
+      - -usr/share/doc
     after:
+      - desktop-qt5
       - ffmpeg
   citra-canary:
     plugin: cmake
@@ -51,37 +55,37 @@ parts:
       - build-essential
       - libsdl2-dev
       - qtbase5-dev
+      - libpulse-dev
       - libqt5opengl5-dev
       - qtmultimedia5-dev
       - libavcodec-dev
       - libavcodec-extra
       - ffmpeg
-    stage-packages:
-      - qtwayland5
-      - libsdl2-dev
-      - qtbase5-dev
-      - libqt5opengl5-dev
-      - qtmultimedia5-dev
-      - libpulse0
-      - libqt5multimedia5-plugins
+      - libfdk-aac-dev
     override-build: |
       snapcraftctl build
       sed -i 's|Icon=citra|Icon=/usr/local/citra/canary/share/icons/hicolor/scalable/apps/citra.svg|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/canary/share/applications/citra.desktop
       sed -i 's|Name=Citra|Name=Citra Canary|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/canary/share/applications/citra.desktop
+    stage:
+      - -usr/share/doc
     after:
+      - desktop-qt5
       - ffmpeg
+      - citra-nightly
   ffmpeg:
     plugin: nil
     stage-packages:
-      - libfdk-aac-dev
+      - libfdk-aac1
       - ffmpeg
-      - libswscale-dev
-      - libavformat-dev
-      - libavcodec-dev
-      - libavdevice-dev
+      - libswscale5
+      - libavformat58
+      - libavcodec58
+      - libavdevice58
       - libavcodec-extra
       - freeglut3
       - libglu1
+    stage:
+      - -usr/share/doc
   desktop-qt5:
     build-packages:
       - build-essential
@@ -113,12 +117,48 @@ parts:
       snapcraftctl prime
       sed -i 's|XDG_DATA_HOME=$SNAP_USER_DATA|XDG_DATA_HOME=$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/bin/desktop-launch
       sed -i 's|XDG_CONFIG_HOME=$SNAP_USER_DATA|XDG_CONFIG_HOME=$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/bin/desktop-launch
+    stage:
+      - -usr/share/doc
   plasma-integration:
     plugin: nil
     stage-packages:
       - breeze-icon-theme
       - kde-style-breeze
       - plasma-integration
+    stage:
+      - -usr/share/doc
+  desktop-settings-packages:
+    plugin: nil
+    build-packages:
+    - libglib2.0-bin
+    stage-packages:
+    - gsettings-desktop-schemas
+    - ubuntu-settings
+    prime:
+    - usr/share/glib-2.0/schemas/*
+    after: [ desktop-qt5 ]
+  desktop-settings-build:
+    plugin: nil
+    after: [ desktop-settings-packages ]
+    override-prime: |
+      set -eux
+      glib-compile-schemas usr/share/glib-2.0/schemas
+  cleanup:
+    after:  # Make this part run last; list all your other parts here
+      - citra-canary
+      - citra-nightly
+      - desktop-qt5
+      - ffmpeg
+      - plasma-integration
+      - desktop-settings-build
+    plugin: nil
+    build-snaps:  # List all content-snaps and base snaps you're using here
+      - core20
+    override-prime: |
+      set -eux
+      for snap in "core20"; do  # List all content-snaps and base snaps you're using here
+        cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
+      done
 plugs:
   gtk-3-themes:
     interface: content
