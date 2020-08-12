@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a145c76d0..a41727bd0 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -331,7 +331,7 @@ add_definitions(-DBOOST_ERROR_CODE_HEADER_ONLY
+ # generate git/build information
+ include(GetGitRevisionDescription)
+ get_git_head_revision(GIT_REF_SPEC GIT_REV)
+-git_describe(GIT_DESC --always --long --dirty)
++git_describe(GIT_DESC --always --long)
+ git_branch_name(GIT_BRANCH)
+ get_timestamp(BUILD_DATE)
+ 

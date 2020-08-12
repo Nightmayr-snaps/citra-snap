@@ -35,6 +35,11 @@ parts:
       - libqt5multimedia5
       - libpulse0
       - libqt5multimedia5-plugins
+    override-pull: |
+      # WIP to rename application title so it's easier to tell which Citra version is being used
+      snapcraftctl pull
+      git apply $SNAPCRAFT_STAGE/removedirtyversion.patch
+      git apply $SNAPCRAFT_STAGE/nightlywindowtitle.patch
     override-build: |
       snapcraftctl build
       sed -i 's|Icon=citra|Icon=/usr/local/citra/nightly/share/icons/hicolor/scalable/apps/citra.svg|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/nightly/share/applications/citra.desktop
@@ -42,6 +47,7 @@ parts:
     stage:
       - -usr/share/doc
     after:
+      - patches
       - desktop-qt5
       - ffmpeg
   citra-canary:
@@ -62,6 +68,10 @@ parts:
       - libavcodec-extra
       - ffmpeg
       - libfdk-aac-dev
+    override-pull: |
+      snapcraftctl pull
+      git apply $SNAPCRAFT_STAGE/removedirtyversion.patch
+      git apply $SNAPCRAFT_STAGE/canarywindowtitle.patch
     override-build: |
       snapcraftctl build
       sed -i 's|Icon=citra|Icon=/usr/local/citra/canary/share/icons/hicolor/scalable/apps/citra.svg|' $SNAPCRAFT_PART_INSTALL/usr/local/citra/canary/share/applications/citra.desktop
@@ -69,6 +79,7 @@ parts:
     stage:
       - -usr/share/doc
     after:
+      - patches
       - desktop-qt5
       - ffmpeg
       - citra-nightly
@@ -86,6 +97,12 @@ parts:
       - libglu1
     stage:
       - -usr/share/doc
+  patches:
+    plugin: dump
+    source: snap/local/patches
+    source-type: local
+    prime:
+      - -*
   desktop-qt5:
     build-packages:
       - build-essential
@@ -150,6 +167,7 @@ parts:
       - desktop-qt5
       - ffmpeg
       - plasma-integration
+      - patches
       - desktop-settings-build
     plugin: nil
     build-snaps:  # List all content-snaps and base snaps you're using here

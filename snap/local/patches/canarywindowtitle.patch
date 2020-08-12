@@ -1,0 +1,13 @@
+diff --git a/src/citra_qt/main.ui b/src/citra_qt/main.ui
+index 2eff98083..cf49405b0 100644
+--- a/src/citra_qt/main.ui
++++ b/src/citra_qt/main.ui
+@@ -11,7 +11,7 @@
+    </rect>
+   </property>
+   <property name="windowTitle">
+-   <string>Citra</string>
++   <string>Citra Canary</string>
+   </property>
+   <property name="windowIcon">
+    <iconset>
