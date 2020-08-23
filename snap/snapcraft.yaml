@@ -13,7 +13,7 @@ parts:
   citra-nightly:
     plugin: cmake
     source: https://github.com/citra-emu/citra-nightly.git
-    source-tag: nightly-1600
+    source-tag: nightly-1601
     cmake-parameters: [-DCMAKE_BUILD_TYPE=Release, -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON, -DCMAKE_INSTALL_PREFIX=/usr/local/citra/nightly, -DENABLE_FFMPEG_AUDIO_DECODER=ON]
     build-packages:
       - pkg-config
@@ -42,7 +42,7 @@ parts:
       # These environment variables are used to replicate the Citra Travis CI build server environment, allowing the title bar to show the version
       - CI: "true"
       - TRAVIS: "true"
-      - TRAVIS_TAG: monkey
+      - TRAVIS_TAG: nightly-1601
       - TRAVIS_REPO_SLUG: "citra-emu/citra-nightly"
     override-build: |
       snapcraftctl build
@@ -57,7 +57,7 @@ parts:
   citra-canary:
     plugin: cmake
     source: https://github.com/citra-emu/citra-canary.git
-    source-tag: canary-1831
+    source-tag: canary-1832
     cmake-parameters: [-DCMAKE_BUILD_TYPE=Release, -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON, -DCMAKE_INSTALL_PREFIX=/usr/local/citra/canary, -DENABLE_FFMPEG_AUDIO_DECODER=ON]
     build-packages:
       - pkg-config
@@ -78,7 +78,7 @@ parts:
     build-environment:
       - CI: "true"
       - TRAVIS: "true"
-      - TRAVIS_TAG: chicken
+      - TRAVIS_TAG: canary-1832
       - TRAVIS_REPO_SLUG: "citra-emu/citra-canary"
     override-build: |
       snapcraftctl build
