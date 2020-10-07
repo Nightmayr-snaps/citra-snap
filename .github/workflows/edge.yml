@@ -1,4 +1,4 @@
-name: Build-Snap-Candidate
+name: Build-Snap-Edge
 
 on:
   pull_request:
@@ -22,4 +22,4 @@ jobs:
       with:
         store_login: ${{ secrets.STORE_LOGIN }}
         snap: ${{ steps.snapcraft.outputs.snap }}
-        release: candidate
+        release: edge

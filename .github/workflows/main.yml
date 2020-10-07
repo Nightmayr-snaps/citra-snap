@@ -20,7 +20,7 @@ jobs:
     - name: Check latest version
       run: |
         ./.github/scripts/version.sh
-        echo ::set-env name=BUILD::$(cat build)
+        echo "BUILD=$(cat build)" >> $GITHUB_ENV
       id: version-check
     - name: Already latest versions - cancelling
       if: env.BUILD == 'false'
