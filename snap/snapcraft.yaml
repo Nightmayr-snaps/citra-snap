@@ -14,7 +14,13 @@ parts:
     plugin: cmake
     source: https://github.com/citra-emu/citra-nightly.git
     source-tag: nightly-1628
-    cmake-parameters: [-DCMAKE_BUILD_TYPE=Release, -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON, -DCMAKE_INSTALL_PREFIX=/usr/local/citra/nightly, -DENABLE_FFMPEG_AUDIO_DECODER=ON]
+    cmake-parameters: 
+      - "-DCMAKE_BUILD_TYPE=Release"
+      - "-DENABLE_QT_TRANSLATION=ON"
+      - "-DUSE_DISCORD_PRESENCE=ON"
+      - "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON"
+      - "-DCMAKE_INSTALL_PREFIX=/usr/local/citra/nightly"
+      - "-DENABLE_FFMPEG_AUDIO_DECODER=ON"
     build-packages:
       - pkg-config
       - dpkg-dev
@@ -58,7 +64,13 @@ parts:
     plugin: cmake
     source: https://github.com/citra-emu/citra-canary.git
     source-tag: canary-1857
-    cmake-parameters: [-DCMAKE_BUILD_TYPE=Release, -DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON, -DCMAKE_INSTALL_PREFIX=/usr/local/citra/canary, -DENABLE_FFMPEG_AUDIO_DECODER=ON]
+    cmake-parameters:
+      - "-DCMAKE_BUILD_TYPE=Release"
+      - "-DENABLE_QT_TRANSLATION=ON"
+      - "-DUSE_DISCORD_PRESENCE=ON"
+      - "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON"
+      - "-DCMAKE_INSTALL_PREFIX=/usr/local/citra/canary"
+      - "-DENABLE_FFMPEG_AUDIO_DECODER=ON"
     build-packages:
       - pkg-config
       - dpkg-dev
