@@ -232,6 +232,7 @@ apps:
       - x11
       - wayland
       - audio-playback
+      - audio-record
       - opengl
       - joystick
       - unity7
@@ -258,6 +259,7 @@ apps:
       - x11
       - wayland
       - audio-playback
+      - audio-record
       - opengl
       - joystick
       - unity7
@@ -278,6 +280,7 @@ apps:
       - x11
       - wayland
       - audio-playback
+      - audio-record
       - opengl
       - joystick
       - network
@@ -296,6 +299,7 @@ apps:
       - x11
       - wayland
       - audio-playback
+      - audio-record
       - opengl
       - joystick
       - network
