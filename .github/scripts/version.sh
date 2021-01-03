@@ -4,8 +4,8 @@
 # check latest tagged version
 LATEST_NIGHTLY_VERSION_TAG="$(curl https://api.github.com/repos/citra-emu/citra-nightly/releases/latest -s | jq .tag_name -r)"
 LATEST_CANARY_VERSION_TAG="$(curl https://api.github.com/repos/citra-emu/citra-canary/releases/latest -s | jq .tag_name -r)"
-CURRENT_NIGHTLY_VERSION_TAG="$(yq r snap/snapcraft.yaml parts.citra-nightly.source-tag)"
-CURRENT_CANARY_VERSION_TAG="$(yq r snap/snapcraft.yaml parts.citra-canary.source-tag)"
+CURRENT_NIGHTLY_VERSION_TAG="$(yq e '.parts.citra-nightly.source-tag' snap/snapcraft.yaml)"
+CURRENT_CANARY_VERSION_TAG="$(yq e '.parts.citra-canary.source-tag' snap/snapcraft.yaml)"
 CURRENT_NIGHTLY_VERSION_SNAP=${CURRENT_NIGHTLY_VERSION_TAG#nightly-}
 CURRENT_CANARY_VERSION_SNAP=${CURRENT_CANARY_VERSION_TAG#canary-}
 LATEST_CANARY_VERSION=${LATEST_CANARY_VERSION_TAG#canary-}
