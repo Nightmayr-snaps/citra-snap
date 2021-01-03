@@ -18,25 +18,24 @@ if [ $CURRENT_NIGHTLY_VERSION_TAG != $LATEST_NIGHTLY_VERSION_TAG ] || [ $CURRENT
         echo "citra-nightly:: github: $LATEST_NIGHTLY_VERSION_TAG snap: $CURRENT_NIGHTLY_VERSION_TAG"
         echo "citra-canary:: github: $LATEST_CANARY_VERSION_TAG snap: $CURRENT_CANARY_VERSION_TAG"
         echo "updating snapcraft.yaml with new versions"
-        yq w -i snap/snapcraft.yaml parts.citra-nightly.source-tag $LATEST_NIGHTLY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml parts.citra-nightly.build-environment[2].TRAVIS_TAG $LATEST_NIGHTLY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml parts.citra-canary.source-tag $LATEST_CANARY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml parts.citra-canary.build-environment[2].TRAVIS_TAG $LATEST_CANARY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml version C$LATEST_CANARY_VERSION-N$LATEST_NIGHTLY_VERSION
+        yq eval ".parts.citra-nightly.source-tag = \"$LATEST_NIGHTLY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".parts.citra-nightly.build-environment[2].TRAVIS_TAG = \"$LATEST_NIGHTLY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".parts.citra-canary.source-tag = \"$LATEST_CANARY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".parts.citra-canary.build-environment[2].TRAVIS_TAG = \"$LATEST_CANARY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".version = \"C$LATEST_CANARY_VERSION-N$LATEST_NIGHTLY_VERSION\"" -i snap/snapcraft.yaml
     elif [ $CURRENT_NIGHTLY_VERSION_TAG != $LATEST_NIGHTLY_VERSION_TAG ]; then
         echo "citra-nightly versions don't match, github: $LATEST_NIGHTLY_VERSION_TAG snap: $CURRENT_NIGHTLY_VERSION_TAG"
         echo "updating snapcraft.yaml with new nightly version"
-        yq w -i snap/snapcraft.yaml parts.citra-nightly.source-tag $LATEST_NIGHTLY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml parts.citra-nightly.build-environment[2].TRAVIS_TAG $LATEST_NIGHTLY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml version C$CURRENT_CANARY_VERSION_SNAP-N$LATEST_NIGHTLY_VERSION
+        yq eval ".parts.citra-nightly.source-tag = \"$LATEST_NIGHTLY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".parts.citra-nightly.build-environment[2].TRAVIS_TAG = \"$LATEST_NIGHTLY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".version = \"C$CURRENT_CANARY_VERSION_SNAP-N$LATEST_NIGHTLY_VERSION\"" -i snap/snapcraft.yaml
     else
         echo "citra-canary versions don't match, github: $LATEST_CANARY_VERSION_TAG snap: $CURRENT_CANARY_VERSION_TAG"
         echo "updating snapcraft.yaml with new canary version"
-        yq w -i snap/snapcraft.yaml parts.citra-canary.source-tag $LATEST_CANARY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml parts.citra-canary.build-environment[2].TRAVIS_TAG $LATEST_CANARY_VERSION_TAG
-        yq w -i snap/snapcraft.yaml version C$LATEST_CANARY_VERSION-N$CURRENT_NIGHTLY_VERSION_SNAP
+        yq eval ".parts.citra-canary.source-tag = \"$LATEST_CANARY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".parts.citra-canary.build-environment[2].TRAVIS_TAG = \"$LATEST_CANARY_VERSION_TAG\"" -i snap/snapcraft.yaml
+        yq eval ".version = \"C$LATEST_CANARY_VERSION-N$CURRENT_NIGHTLY_VERSION_SNAP\"" -i snap/snapcraft.yaml
     fi
-    
     echo true > build
 else
     echo "versions match"
