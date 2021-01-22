@@ -221,7 +221,7 @@ apps:
     desktop: usr/local/citra/nightly/share/applications/citra.desktop
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       KDE_FORK_SLAVES: 1
       DISABLE_WAYLAND: 1
       GIO_MODULE_DIR: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gio/modules"
@@ -248,7 +248,7 @@ apps:
     desktop: usr/local/citra/canary/share/applications/citra.desktop
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       KDE_FORK_SLAVES: 1
       DISABLE_WAYLAND: 1
       GIO_MODULE_DIR: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gio/modules"
@@ -274,7 +274,7 @@ apps:
     command: usr/local/citra/canary/bin/citra
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       DISABLE_WAYLAND: 1
     plugs:
       - x11
@@ -293,7 +293,7 @@ apps:
     command: usr/local/citra/nightly/bin/citra
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       DISABLE_WAYLAND: 1
     plugs:
       - x11
@@ -312,7 +312,7 @@ apps:
     command: usr/local/citra/canary/bin/citra-room
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       DISABLE_WAYLAND: 1
     plugs:
       - network
@@ -322,7 +322,7 @@ apps:
     command: usr/local/citra/nightly/bin/citra-room
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$LD_LIBRARY_PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       DISABLE_WAYLAND: 1
     plugs:
       - network
