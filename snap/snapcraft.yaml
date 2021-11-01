@@ -169,6 +169,12 @@ parts:
     stage:
       - -usr/share/doc
       - -lib/x86_64-linux-gnu/liblzma.so.5.2.4
+  launchers:
+    plugin: dump
+    source: snap/local/launchers
+    source-type: local
+    organize:
+      '*': bin/
   desktop-settings-packages:
     plugin: nil
     build-packages:
