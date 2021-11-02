@@ -169,6 +169,12 @@ parts:
     stage:
       - -usr/share/doc
       - -lib/x86_64-linux-gnu/liblzma.so.5.2.4
+  launchers:
+    plugin: dump
+    source: snap/local/launchers
+    source-type: local
+    organize:
+      '*': bin/
   desktop-settings-packages:
     plugin: nil
     build-packages:
@@ -217,7 +223,10 @@ plugs:
     default-provider: gtk-common-themes
 apps:
   citra-qt-nightly:
-    command: bin/desktop-launch $SNAP/usr/local/citra/nightly/bin/citra-qt
+    command: usr/local/citra/nightly/bin/citra-qt
+    command-chain:
+    - "bin/desktop-launch"
+    - "bin/citra-launch"
     desktop: usr/local/citra/nightly/share/applications/citra.desktop
     environment:
       HOME: "$SNAP_USER_COMMON"
@@ -244,7 +253,10 @@ apps:
       - hardware-observe
       - mount-observe
   citra-qt-canary:
-    command: bin/desktop-launch $SNAP/usr/local/citra/canary/bin/citra-qt
+    command: usr/local/citra/canary/bin/citra-qt
+    command-chain:
+    - "bin/desktop-launch"
+    - "bin/citra-launch"
     desktop: usr/local/citra/canary/share/applications/citra.desktop
     environment:
       HOME: "$SNAP_USER_COMMON"
@@ -272,6 +284,8 @@ apps:
       - mount-observe
   citra-canary:
     command: usr/local/citra/canary/bin/citra
+    command-chain:
+    - "bin/citra-launch"
     environment:
       HOME: "$SNAP_USER_COMMON"
       LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
@@ -291,6 +305,8 @@ apps:
       - mount-observe
   citra-nightly:
     command: usr/local/citra/nightly/bin/citra
+    command-chain:
+    - "bin/citra-launch"
     environment:
       HOME: "$SNAP_USER_COMMON"
       LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
