@@ -9,6 +9,7 @@ grade: stable
 confinement: strict
 architectures:
   - build-on: amd64
+compression: lzo
 parts:
   citra-nightly:
     plugin: cmake
@@ -21,32 +22,23 @@ parts:
       - "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON"
       - "-DCMAKE_INSTALL_PREFIX=/usr/local/citra/nightly"
       - "-DENABLE_FFMPEG_AUDIO_DECODER=ON"
+    build-snaps:
+      - kde-frameworks-5-qt-5-15-3-core20-sdk
     build-packages:
       - pkg-config
       - dpkg-dev
       - build-essential
       - libsdl2-dev
-      - qtbase5-dev
       - libpulse-dev
-      - libqt5opengl5-dev
-      - qtmultimedia5-dev
       - libavcodec-dev
       - libavcodec-extra
       - ffmpeg
       - libfdk-aac-dev
-      - qttools5-dev
-      - qttools5-dev-tools
-    stage-packages:
-      - qtwayland5
-      - libsdl2-2.0-0
-      - libqt5opengl5
-      - libqt5multimedia5
-      - libpulse0
-      - libqt5multimedia5-plugins
     override-pull: |
       snapcraftctl pull
       git apply $SNAPCRAFT_STAGE/removedirtyversion.patch
     build-environment:
+      - SNAPCRAFT_CMAKE_ARGS: -DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current
       # These environment variables are used to replicate the Citra Travis CI build server environment, allowing the title bar to show the version
       - CI: "true"
       - TRAVIS: "true"
@@ -60,8 +52,6 @@ parts:
       - -usr/share/doc
     after:
       - patches
-      - desktop-qt5
-      - ffmpeg
   citra-canary:
     plugin: cmake
     source: https://github.com/citra-emu/citra-canary.git
@@ -78,20 +68,16 @@ parts:
       - dpkg-dev
       - build-essential
       - libsdl2-dev
-      - qtbase5-dev
       - libpulse-dev
-      - libqt5opengl5-dev
-      - qtmultimedia5-dev
       - libavcodec-dev
       - libavcodec-extra
       - ffmpeg
       - libfdk-aac-dev
-      - qttools5-dev
-      - qttools5-dev-tools
     override-pull: |
       snapcraftctl pull
       git apply $SNAPCRAFT_STAGE/removedirtyversion.patch
     build-environment:
+      - SNAPCRAFT_CMAKE_ARGS: -DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current
       - CI: "true"
       - TRAVIS: "true"
       - TRAVIS_TAG: canary-2007
@@ -104,123 +90,48 @@ parts:
       - -usr/share/doc
     after:
       - patches
-      - desktop-qt5
-      - ffmpeg
       - citra-nightly
-  ffmpeg:
-    plugin: nil
-    stage-packages:
-      - libfdk-aac1
-      - ffmpeg
-      - libswscale5
-      - libavformat58
-      - libavcodec58
-      - libavdevice58
-      - libavcodec-extra
-      - freeglut3
-      - libglu1
-    stage:
-      - -usr/share/doc
   patches:
     plugin: dump
     source: snap/local/patches
     source-type: local
     prime:
       - -*
-  desktop-qt5:
-    build-packages:
-      - build-essential
-      - qtbase5-dev
-      - dpkg-dev
-    make-parameters:
-      - FLAVOR=qt5
-    plugin: make
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: qt
-    stage-packages:
-      - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
-      - shared-mime-info
-      - libqt5gui5
-      - libgdk-pixbuf2.0-0
-      - libqt5svg5
-      - try:
-          - appmenu-qt5
-      - locales-all
-      - xdg-user-dirs
-      - libgtk2.0-0
-      - qt5-gtk-platformtheme
-    override-prime: |
-      snapcraftctl prime
-      sed -i 's|XDG_DATA_HOME=$SNAP_USER_DATA|XDG_DATA_HOME=$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/bin/desktop-launch
-      sed -i 's|XDG_CONFIG_HOME=$SNAP_USER_DATA|XDG_CONFIG_HOME=$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/bin/desktop-launch
-    stage:
-      - -usr/share/doc
-  plasma-integration:
-    plugin: nil
-    stage-packages:
-      - breeze-icon-theme
-      - kde-style-breeze
-      - plasma-integration
-    stage:
-      - -usr/share/doc
-      - -lib/x86_64-linux-gnu/liblzma.so.5.2.4
   launchers:
     plugin: dump
     source: snap/local/launchers
     source-type: local
     organize:
       '*': bin/
-  desktop-settings-packages:
-    plugin: nil
+  kde-neon-extension:
     build-packages:
-      - libglib2.0-bin
-    stage-packages:
-      - gsettings-desktop-schemas
-      - ubuntu-settings
-    prime:
-      - usr/share/glib-2.0/schemas/*
-    after: [desktop-qt5]
-  desktop-settings-build:
-    plugin: nil
-    after: [desktop-settings-packages]
+    - g++
+    build-snaps:
+    - kde-frameworks-5-qt-5-15-3-core20-sdk/latest/candidate
+    make-parameters:
+    - PLATFORM_PLUG=nightmayr-kf5-qt-5-15-2-core20
+    plugin: make
+    source: $SNAPCRAFT_EXTENSIONS_DIR/desktop
+    source-subdir: kde-neon
     override-prime: |
-      set -eux
-      glib-compile-schemas usr/share/glib-2.0/schemas
+      snapcraftctl prime
+      sed -i 's|XDG_DATA_HOME="$SNAP_USER_DATA|XDG_DATA_HOME="$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
+      sed -i 's|XDG_CONFIG_HOME="$SNAP_USER_DATA|XDG_CONFIG_HOME="$SNAP_USER_COMMON|' $SNAPCRAFT_PRIME/snap/command-chain/desktop-launch
   cleanup:
-    after: # Make this part run last; list all your other parts here
-      - citra-canary
-      - citra-nightly
-      - desktop-qt5
-      - ffmpeg
-      - plasma-integration
-      - patches
-      - desktop-settings-build
+    after:
+    - kde-neon-extension
+    - yuzu
+    - launchers
     plugin: nil
-    build-snaps: # List all content-snaps and base snaps you're using here
-      - core20
+    build-snaps:
+    - core20
+    - nightmayr-kf5-qt-5-15-2-core20
     override-prime: |
       set -eux
-      for snap in "core20"; do  # List all content-snaps and base snaps you're using here
+      for snap in "core20" "nightmayr-kf5-qt-5-15-2-core20"; do  # List all content-snaps and base snaps you're using here
         cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$SNAPCRAFT_PRIME/{}" \;
       done
-plugs:
-  gtk-3-themes:
-    interface: content
-    target: $SNAP/data-dir/themes
-    default-provider: gtk-common-themes
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
-  sound-themes:
-    interface: content
-    target: $SNAP/data-dir/sounds
-    default-provider: gtk-common-themes
+
 apps:
   citra-qt-nightly:
     command: usr/local/citra/nightly/bin/citra-qt
@@ -231,9 +142,7 @@ apps:
     environment:
       HOME: "$SNAP_USER_COMMON"
       LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
-      KDE_FORK_SLAVES: 1
       DISABLE_WAYLAND: 1
-      GIO_MODULE_DIR: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gio/modules"
       PATH: "$PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5" # Allows kioslave5 to be found
     plugs:
       - desktop
@@ -261,10 +170,7 @@ apps:
     environment:
       HOME: "$SNAP_USER_COMMON"
       LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
-      KDE_FORK_SLAVES: 1
       DISABLE_WAYLAND: 1
-      GIO_MODULE_DIR: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gio/modules"
-      PATH: "$PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5" # Allows kioslave5 to be found
     plugs:
       - desktop
       - desktop-legacy
@@ -344,3 +250,28 @@ apps:
       - network
       - network-bind
       - home
+assumes:
+- snapd2.43
+plugs:
+  desktop:
+    mount-host-font-cache: false
+  icon-themes:
+    default-provider: gtk-common-themes
+    interface: content
+    target: $SNAP/data-dir/icons
+  nightmayr-kf5-qt-5-15-2-core20:
+    default-provider: nightmayr-kf5-qt-5-15-2-core20
+    interface: content
+    target: $SNAP/kf5
+  sound-themes:
+    default-provider: gtk-common-themes
+    interface: content
+    target: $SNAP/data-dir/sounds
+environment:
+  SNAP_DESKTOP_RUNTIME: $SNAP/kf5
+hooks:
+  configure:
+    command-chain:
+    - snap/command-chain/hooks-configure-desktop
+    plugs:
+    - desktop
