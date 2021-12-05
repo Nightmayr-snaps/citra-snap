@@ -144,7 +144,6 @@ apps:
       HOME: "$SNAP_USER_COMMON"
       LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
       DISABLE_WAYLAND: 1
-      PATH: "$PATH:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5" # Allows kioslave5 to be found
     plugs:
       - desktop
       - desktop-legacy
@@ -195,8 +194,9 @@ apps:
       - "bin/citra-launch"
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio:$SNAP/kf5/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib:$SNAP/kf5/lib:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri"
       DISABLE_WAYLAND: 1
+      PATH: "$PATH:$SNAP/kf5/usr/bin:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5"
     plugs:
       - x11
       - wayland
@@ -216,8 +216,9 @@ apps:
       - "bin/citra-launch"
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio:$SNAP/kf5/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib:$SNAP/kf5/lib:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri"
       DISABLE_WAYLAND: 1
+      PATH: "$PATH:$SNAP/kf5/usr/bin:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5"
     plugs:
       - x11
       - wayland
@@ -235,8 +236,9 @@ apps:
     command: usr/local/citra/canary/bin/citra-room
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio:$SNAP/kf5/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib:$SNAP/kf5/lib:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri"
       DISABLE_WAYLAND: 1
+      PATH: "$PATH:$SNAP/kf5/usr/bin:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5"
     plugs:
       - network
       - network-bind
@@ -245,8 +247,9 @@ apps:
     command: usr/local/citra/nightly/bin/citra-room
     environment:
       HOME: "$SNAP_USER_COMMON"
-      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio"
+      LD_LIBRARY_PATH: "$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pulseaudio:$SNAP/kf5/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET:$SNAP/kf5/usr/lib:$SNAP/kf5/lib:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/dri"
       DISABLE_WAYLAND: 1
+      PATH: "$PATH:$SNAP/kf5/usr/bin:$SNAP/kf5/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libexec/kf5"
     plugs:
       - network
       - network-bind
