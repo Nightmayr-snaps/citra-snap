@@ -120,7 +120,8 @@ parts:
   cleanup:
     after:
     - kde-neon-extension
-    - yuzu
+    - citra-canary
+    - citra-nightly
     - launchers
     plugin: nil
     build-snaps:
@@ -136,7 +137,7 @@ apps:
   citra-qt-nightly:
     command: usr/local/citra/nightly/bin/citra-qt
     command-chain:
-      - "bin/desktop-launch"
+      - "snap/command-chain/desktop-launch"
       - "bin/citra-launch"
     desktop: usr/local/citra/nightly/share/applications/citra.desktop
     environment:
@@ -164,7 +165,7 @@ apps:
   citra-qt-canary:
     command: usr/local/citra/canary/bin/citra-qt
     command-chain:
-      - "bin/desktop-launch"
+      - "snap/command-chain/desktop-launch"
       - "bin/citra-launch"
     desktop: usr/local/citra/canary/share/applications/citra.desktop
     environment:
