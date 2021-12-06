@@ -16,6 +16,7 @@ jobs:
     - name: Testing snap
       run: |
         sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}
+        sudo snap connect citra-emu:nightmayr-kf5-qt-5-15-2-core20 nightmayr-kf5-qt-5-15-2-core20
         snap run citra-emu.citra-canary --version
         snap run citra-emu.citra-nightly --version
     - uses: snapcore/action-publish@v1
