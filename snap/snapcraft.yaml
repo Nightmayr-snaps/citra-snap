@@ -22,6 +22,7 @@ parts:
       - "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON"
       - "-DCMAKE_INSTALL_PREFIX=/usr/local/citra/nightly"
       - "-DENABLE_FFMPEG_AUDIO_DECODER=ON"
+      - -DCMAKE_FIND_ROOT_PATH=/usr\;/root/stage\;/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current
     build-snaps:
       - kde-frameworks-5-qt-5-15-3-core20-sdk
     build-packages:
@@ -38,7 +39,6 @@ parts:
       snapcraftctl pull
       git apply $SNAPCRAFT_STAGE/removedirtyversion.patch
     build-environment:
-      - SNAPCRAFT_CMAKE_ARGS: -DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current
       # These environment variables are used to replicate the Citra Travis CI build server environment, allowing the title bar to show the version
       - CI: "true"
       - TRAVIS: "true"
@@ -63,6 +63,7 @@ parts:
       - "-DENABLE_COMPATIBILITY_LIST_DOWNLOAD=ON"
       - "-DCMAKE_INSTALL_PREFIX=/usr/local/citra/canary"
       - "-DENABLE_FFMPEG_AUDIO_DECODER=ON"
+      - -DCMAKE_FIND_ROOT_PATH=/usr\;/root/stage\;/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current
     build-packages:
       - pkg-config
       - dpkg-dev
@@ -77,7 +78,6 @@ parts:
       snapcraftctl pull
       git apply $SNAPCRAFT_STAGE/removedirtyversion.patch
     build-environment:
-      - SNAPCRAFT_CMAKE_ARGS: -DCMAKE_FIND_ROOT_PATH=/snap/kde-frameworks-5-qt-5-15-3-core20-sdk/current
       - CI: "true"
       - TRAVIS: "true"
       - TRAVIS_TAG: canary-2007
