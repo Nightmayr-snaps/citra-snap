@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         token: ${{ secrets.PAT }}
-    - uses: snapcore/action-build@v1
+    - uses: snapcore/action-build@v1.1.0
       id: snapcraft
     - name: Testing snap
       run: |
@@ -19,8 +19,9 @@ jobs:
         sudo snap connect citra-emu:nightmayr-kf5-qt-5-15-2-core20 nightmayr-kf5-qt-5-15-2-core20
         snap run citra-emu.citra-canary --version
         snap run citra-emu.citra-nightly --version
-    - uses: snapcore/action-publish@v1
+    - uses: snapcore/action-publish@v1.1.1
+      env:
+        SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.STORE_LOGIN }}
       with:
-        store_login: ${{ secrets.STORE_LOGIN }}
         snap: ${{ steps.snapcraft.outputs.snap }}
         release: edge
