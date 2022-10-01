@@ -1,6 +1,6 @@
 name: citra-emu
 base: core20
-version: C2281-N1788
+version: C2282-N1788
 summary: Nintendo 3DS Emulator
 description: "Citra is an experimental open-source Nintendo 3DS emulator/debugger written in C++. \nIt is written with portability in mind, with builds actively maintained for Windows, Linux and macOS.\n\nCitra emulates a subset of 3DS hardware and therefore is useful for running/debugging homebrew applications, and it is also able to run many commercial games! Some of these do not run at a playable state, \nbut work is being done every day to advance the project forward. (Playable here means compatibility of at least \"Okay\" on the game compatibility list.)\n\nCitra folder location: *`$HOME/snap/citra-emu/common/.local/share/citra-emu`*\n\nThis snap is not necessarily endorsed or officially maintained by the upstream developers.\n\nUpstream Project: https://citra-emu.org/\nsnapcraft.yaml Build Definition: https://github.com/Nightmayr/citra-snap/blob/master/snap/snapcraft.yaml\n\nDonate to citra: https://citra-emu.org/donate/\n"
 license: GPL-2.0
@@ -56,7 +56,7 @@ parts:
   citra-canary:
     plugin: cmake
     source: https://github.com/citra-emu/citra-canary.git
-    source-tag: canary-2281
+    source-tag: canary-2282
     cmake-parameters:
       - "-DCMAKE_BUILD_TYPE=Release"
       - "-DENABLE_QT_TRANSLATION=ON"
@@ -82,7 +82,7 @@ parts:
     build-environment:
       - CI: "true"
       - TRAVIS: "true"
-      - TRAVIS_TAG: canary-2281
+      - TRAVIS_TAG: canary-2282
       - TRAVIS_REPO_SLUG: "citra-emu/citra-canary"
     override-build: |
       snapcraftctl build
